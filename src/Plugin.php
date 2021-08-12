@@ -29,12 +29,12 @@ final class Plugin
 
     public function run()
     {
-        $this->add_flush_cache_actions();
-
         add_filter( 'innocode_assets_version_allow_dependency', [ $this, 'can_use_dependency' ], 10, 3 );
 
         add_filter( 'script_loader_src', [ $this, 'add_script_ver_query_arg' ], 10, 2 );
         add_filter( 'style_loader_src', [ $this, 'add_style_ver_query_arg' ], 10, 2 );
+
+        add_action( 'plugins_loaded', [ $this, 'add_flush_cache_actions' ] );
     }
 
     /**
