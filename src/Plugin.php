@@ -54,6 +54,10 @@ final class Plugin
     {
         global $wp_scripts;
 
+        if ( ! isset( $wp_scripts ) ) {
+            return $src;
+        }
+
         return $this->add_ver_query_arg( $src, $wp_scripts, $handle );
     }
 
@@ -65,6 +69,10 @@ final class Plugin
     public function add_style_ver_query_arg( string $src, ?string $handle ) : string
     {
         global $wp_styles;
+
+        if ( ! isset( $wp_styles ) ) {
+            return $src;
+        }
 
         return $this->add_ver_query_arg( $src, $wp_styles, $handle );
     }
