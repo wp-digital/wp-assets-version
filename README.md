@@ -57,10 +57,10 @@ as a good **hotfix**. There are few ways to add version with this plugin:
   ````
   /**
    * @param bool $allow
-   * @param string $type - one of ['script', 'style']
+   * @param string $type - One of [ 'script', 'style' ].
    * @param _WP_Dependency $dependency
    */
-  add_filter( 'innocode_assets_version_allow_default', function ( bool $allow, string $type, _WP_Dependency $dependency ) {
+  add_filter( 'innocode_assets_version_allow_dependency', function ( bool $allow, string $type, _WP_Dependency $dependency ) {
       // @TODO: implement logic
 
       return $allow;

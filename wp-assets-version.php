@@ -17,8 +17,14 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-$GLOBALS['innocode_assets_version'] = new AssetsVersion\Plugin();
-$GLOBALS['innocode_assets_version']->run();
+if ( ! function_exists( 'innocode_assets_version_init' ) ) {
+    function innocode_assets_version_init() {
+        $GLOBALS['innocode_assets_version'] = new AssetsVersion\Plugin();
+        $GLOBALS['innocode_assets_version']->run();
+    }
+}
+
+add_action( 'init', 'innocode_assets_version_init' );
 
 if ( ! function_exists( 'innocode_assets_version' ) ) {
     /**

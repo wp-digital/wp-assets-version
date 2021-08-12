@@ -29,11 +29,12 @@ final class Plugin
 
     public function run()
     {
-        add_filter( 'innocode_assets_version_allow_default', [ $this, 'should_allow_default' ], 10, 3 );
+        $this->add_flush_cache_actions();
+
+        add_filter( 'innocode_assets_version_allow_dependency', [ $this, 'can_use_dependency' ], 10, 3 );
+
         add_filter( 'script_loader_src', [ $this, 'add_script_ver_query_arg' ], 10, 2 );
         add_filter( 'style_loader_src', [ $this, 'add_style_ver_query_arg' ], 10, 2 );
-
-        add_action( 'plugins_loaded', [ $this, 'add_flush_cache_actions' ] );
     }
 
     /**
@@ -76,7 +77,11 @@ final class Plugin
      */
     public function add_ver_query_arg( string $src, WP_Dependencies $dependencies, ?string $handle ) : string
     {
-        if ( null === $handle || ! isset( $dependencies->registered[ $handle ] ) ) {
+        if (
+            ! apply_filters( 'innocode_assets_version_allow_default', false ) ||
+            null === $handle ||
+            ! isset( $dependencies->registered[ $handle ] )
+        ) {
             return $src;
         }
 
@@ -86,7 +91,7 @@ final class Plugin
         $dependency = $dependencies->registered[ $handle ];
         $type = $dependencies instanceof WP_Scripts ? 'script' : 'style';
 
-        if ( ! apply_filters( 'innocode_assets_version_allow_default', false, $type, $dependency ) ) {
+        if ( ! apply_filters( 'innocode_assets_version_allow_dependency', true, $type, $dependency ) ) {
             return $src;
         }
 
@@ -120,11 +125,11 @@ final class Plugin
 
     /**
      * @param bool $allow
-     * @param string $type
+     * @param string $type - One of [ 'script', 'style' ].
      * @param _WP_Dependency $dependency
      * @return bool
      */
-    public function should_allow_default( bool $allow, string $type, _WP_Dependency $dependency ) : bool
+    public function can_use_dependency( bool $allow, string $type, _WP_Dependency $dependency ) : bool
     {
         return false === $dependency->ver || null === $dependency->ver;
     }
