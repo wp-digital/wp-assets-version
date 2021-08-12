@@ -2,6 +2,7 @@
 
 namespace Innocode\AssetsVersion;
 
+use _WP_Dependency;
 use WP_Dependencies;
 use WP_Scripts;
 
@@ -28,6 +29,7 @@ final class Plugin
 
     public function run()
     {
+        add_filter( 'innocode_assets_version_allow_default', [ $this, 'should_allow_default' ], 10, 3 );
         add_filter( 'script_loader_src', [ $this, 'add_script_ver_query_arg' ], 10, 2 );
         add_filter( 'style_loader_src', [ $this, 'add_style_ver_query_arg' ], 10, 2 );
 
@@ -78,15 +80,13 @@ final class Plugin
             return $src;
         }
 
+        /**
+         * @var _WP_Dependency $dependency
+         */
+        $dependency = $dependencies->registered[ $handle ];
         $type = $dependencies instanceof WP_Scripts ? 'script' : 'style';
 
-        if ( ! apply_filters( 'innocode_assets_version_allow_default', false, $type ) ) {
-            return $src;
-        }
-
-        $dependency = $dependencies->registered[ $handle ];
-
-        if ( null !== $dependency->ver ) {
+        if ( ! apply_filters( 'innocode_assets_version_allow_default', false, $type, $dependency ) ) {
             return $src;
         }
 
@@ -116,5 +116,16 @@ final class Plugin
                 $bump_version
             );
         }
+    }
+
+    /**
+     * @param bool $allow
+     * @param string $type
+     * @param _WP_Dependency $dependency
+     * @return bool
+     */
+    public function should_allow_default( bool $allow, string $type, _WP_Dependency $dependency ) : bool
+    {
+        return false === $dependency->ver || null === $dependency->ver;
     }
 }
