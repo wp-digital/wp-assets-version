@@ -131,6 +131,6 @@ final class Plugin
      */
     public function can_use_dependency( bool $allow, string $type, _WP_Dependency $dependency ) : bool
     {
-        return false === $dependency->ver || null === $dependency->ver;
+        return null === $dependency->ver;
     }
 }

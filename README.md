@@ -46,7 +46,7 @@ as a good **hotfix**. There are few ways to add version with this plugin:
   wp_enqueue_script( $handle, $src, $deps, $ver, $in_footer );
   ````
   
-- Force using of version where `false` or `null` set as 4th parameter:
+- Force using of version where `null` set as 4th parameter:
 
   ````
   add_filter( 'innocode_assets_version_allow_default', '__return_true' );
