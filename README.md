@@ -52,7 +52,7 @@ as a good **hotfix**. There are few ways to add version with this plugin:
   add_filter( 'innocode_assets_version_allow_default', '__return_true' );
   ````
   
-- Force using of version but with own logic, e.g.:
+- Force using of version but with own logic per dependency (requires previous hook to be set), e.g.:
 
   ````
   /**
