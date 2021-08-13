@@ -3,7 +3,7 @@
  * Plugin Name: Assets Version
  * Description: Helps with versioning of CSS and JS files.
  * Plugin URI: https://github.com/innocode-digital/wp-assets-version
- * Version: 0.1.0
+ * Version: 1.0.0
  * Author: Innocode
  * Author URI: https://innocode.com
  * Tested up to: 5.8
