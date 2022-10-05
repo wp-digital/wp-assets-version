@@ -3,6 +3,7 @@
 namespace Innocode\AssetsVersion;
 
 use _WP_Dependency;
+use Innocode\Version\Version;
 use WP_Dependencies;
 use WP_Scripts;
 
@@ -24,7 +25,8 @@ final class Plugin
      */
     public function __construct()
     {
-        $this->version = new Version( Plugin::OPTION );
+        $this->version = new Version();
+        $this->version->set_option( Plugin::OPTION );
     }
 
     public function run()
